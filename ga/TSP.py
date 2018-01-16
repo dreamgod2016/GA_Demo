@@ -40,7 +40,13 @@ class TSP(object):
             distance += math.sqrt((city1["longitude"] - city2["longitude"])**2 + (city1["latitude"] - city2["latitude"])**2)
 
         return distance
-
+    def printResult(self):
+        finalGene = self.population.best.gene
+        for city in finalGene:
+            if (city!=finalGene[-1]):
+                print("%s->"%self.citys[city]["name"],end="")
+            else:
+                print("%s\n"%self.citys[city]["name"])
 
     def run(self, generations):
         for i in range(generations):
@@ -50,6 +56,8 @@ class TSP(object):
                 print("原种群计算出的距离:%f" %distance)
             else:
                 print("第%d次种群繁衍后距离:%f" %(i, distance))
+        self.printResult()
+
 
 def loadJson():
     cityFile = open("data.json",encoding="utf-8")
@@ -58,7 +66,7 @@ def loadJson():
 
 if __name__ == '__main__':
     tsp = TSP()
-    tsp.run(50)
+    tsp.run(1000)
     # loadJson()
 
 
