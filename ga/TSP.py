@@ -1,6 +1,7 @@
 # coding:utf-8
 import json
 import math
+import matplotlib.pyplot as plt
 from population import population
 
 class TSP(object):
@@ -40,15 +41,18 @@ class TSP(object):
             distance += math.sqrt((city1["longitude"] - city2["longitude"])**2 + (city1["latitude"] - city2["latitude"])**2)
 
         return distance
-    def printResult(self):
+    def printResult(self, generations):
         finalGene = self.population.best.gene
         for city in finalGene:
             if (city!=finalGene[-1]):
                 print("%s->"%self.citys[city]["name"],end="")
             else:
                 print("%s\n"%self.citys[city]["name"])
+        plt.plot(range(generations),self.result)
+        plt.show()
 
     def run(self, generations):
+        self.result = []
         for i in range(generations):
             self.population.generate()
             distance = self.getDistance(self.population.best.gene)
@@ -56,7 +60,8 @@ class TSP(object):
                 print("原种群计算出的距离:%f" %distance)
             else:
                 print("第%d次种群繁衍后距离:%f" %(i, distance))
-        self.printResult()
+            self.result.append(distance)
+        self.printResult(generations)
 
 
 def loadJson():
@@ -65,8 +70,14 @@ def loadJson():
 
 
 if __name__ == '__main__':
+    times = input("请输入循环的代数:")
+    try:
+        times = int(times)
+    except:
+        print("要输入整数哦")
+        times = 1000
     tsp = TSP()
-    tsp.run(1000)
+    tsp.run(times)
     # loadJson()
 
 
